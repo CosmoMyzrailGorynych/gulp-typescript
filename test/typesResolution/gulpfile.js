@@ -1,6 +1,6 @@
 var gulp = require('gulp');
 var newTS = require('../../release-2/main');
-var lib = require('../../typescript/dev');
+var lib = require('typescript');
 
 //
 // This is a minimal gulpfile designed to cause the error reported in #563. It

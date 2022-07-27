@@ -10,8 +10,7 @@ const plumber = require('gulp-plumber');
 const diff = require('gulp-diff');
 
 const tsVersions = {
-	dev: './typescript/dev',
-	release36: './typescript/3.6'
+	3.6: 'typescript'
 };
 
 function findTSDefinition(location) {
@@ -75,7 +74,7 @@ const compile = gulp.series(clean, function compile() {
 function typecheckDev() {
 	return gulp.src(paths.scripts.concat([
 		'!definitions/typescript.d.ts',
-		findTSDefinition(tsVersions.dev)
+		findTSDefinition(tsVersions['3.6'])
 	])).pipe(createProject({ noEmit: true })());
 }
 
@@ -85,8 +84,7 @@ const typecheck = gulp.parallel(typecheckDev);
 
 // We run every test on multiple typescript versions:
 const libs = [
-	['3.6', require(tsVersions.release36)],
-	['dev', require(tsVersions.dev)]
+	['3.6', require(tsVersions['3.6'])],
 ];
 
 /**
@@ -182,6 +180,7 @@ gulp.task('test', gulp.series('test-run', function testVerify() {
 	let failed = false;
 	function onError(error) {
 		failed = true;
+		console.error(error);
 	}
 	return gulp.src('test/output/**/*.*')
 		.pipe(plumber())
